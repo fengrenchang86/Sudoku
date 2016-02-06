@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -24,11 +25,15 @@ import com.frc.sudoku.core.Sudoku;
 @SuppressWarnings("all")
 public class SamplePanel extends JPanel implements IWFPanel, ActionListener {
 	private final String TITLE = "Sample v1";
+	private static final String CMD_UNIQUE_CELL = "CMD_UNIQUE_CELL";
+	private static final String CMD_UNIQUE_NUM = "CMD_UNIQUE_NUM";
 	private int n = 3;
 	private int N = n * n;
 	
 	private JPanel comp = null;
 	private Sudoku sudoku = null;
+	
+	private CellLabel labelGrid[][] = null;
 
 	public SamplePanel() {
 		
@@ -40,6 +45,13 @@ public class SamplePanel extends JPanel implements IWFPanel, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
+		if (CMD_UNIQUE_CELL.equalsIgnoreCase(action)) {
+			onSolve_UniqueCell();
+			repaintAllLabel();
+		} else if (CMD_UNIQUE_NUM.equalsIgnoreCase(action)) {
+			onSolve_UniqueNum();
+			repaintAllLabel();
+		}
 	}
 	private void initSudoku() {
 		boolean rs = false;
@@ -49,10 +61,27 @@ public class SamplePanel extends JPanel implements IWFPanel, ActionListener {
 		}
 		String strGrid = "009080000016002038008000076740000000000605000000000043520000300860400290000030800";
 		sudoku.readGridFromString(strGrid, n);
+		/*
 		while (rt > 0 && c < 5) {
-			while (rt > 0 && c < 5) {
 				rt = sudoku.solve();
 				c++;
+			}
+		 */
+	}
+	private void onSolve_UniqueCell() {
+		sudoku.solveWithUniqueCell();
+	}
+	private void onSolve_UniqueNum() {
+		sudoku.solveWithUniqueNum();
+	}
+	private void repaintAllLabel() {
+		int[][] grid = sudoku.getGrid();
+		boolean[][][] choices = sudoku.getChoices();
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				labelGrid[i][j].setValue(grid[i][j]);
+				labelGrid[i][j].setArr(choices[i][j]);
+				labelGrid[i][j].updateCell();
 			}
 		}
 	}
@@ -64,6 +93,10 @@ public class SamplePanel extends JPanel implements IWFPanel, ActionListener {
 		
 		JPanel sudokuGrid = new JPanel();
 		sudokuGrid.setLayout(new GridLayout(n, n));
+		labelGrid = new CellLabel[N][N];
+		for (int i = 0; i < N; i++) {
+			labelGrid[i] = new CellLabel[N];
+		}
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				JPanel panel = createGong(i*n+j);
@@ -79,6 +112,16 @@ public class SamplePanel extends JPanel implements IWFPanel, ActionListener {
 		controlPanel.setMinimumSize(IConstants.CTRL_DIMENSION);
 		controlPanel.setMaximumSize(IConstants.CTRL_DIMENSION);
 		controlPanel.add(new JLabel("Danny"));
+		
+		JButton btn1 = new JButton("Unique cell");
+		btn1.setActionCommand(CMD_UNIQUE_CELL);
+		btn1.addActionListener(this);
+		controlPanel.add(btn1);
+		
+		JButton btn2 = new JButton("Unique num");
+		btn2.setActionCommand(CMD_UNIQUE_NUM);
+		btn2.addActionListener(this);
+		controlPanel.add(btn2);
 
 		this.add(sudokuGrid);
 		this.add(controlPanel);
@@ -94,12 +137,13 @@ public class SamplePanel extends JPanel implements IWFPanel, ActionListener {
 		int dj = idx%n*n;
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
-				JLabel label = null;
+				CellLabel label = null;
 				if (grid[i+di][j+dj] > 0) {
 					label = generateLabelBig(grid[i+di][j+dj]);
 				} else {
 					label = generateLabel(choices[i+di][j+dj]);
 				}
+				labelGrid[i+di][j+dj] = label;
 				comp.add(label);
 			}
 		}
@@ -150,7 +194,7 @@ public class SamplePanel extends JPanel implements IWFPanel, ActionListener {
 		html += "</font></html>";
 		return html;
 	}
-	private JLabel generateLabel(boolean arr[]) {
+	private CellLabel generateLabel(boolean arr[]) {
 		boolean highlight[] = new boolean[10];
 		highlight[2] = true;
 		
@@ -167,7 +211,7 @@ public class SamplePanel extends JPanel implements IWFPanel, ActionListener {
 		label.setBorder(BorderFactory.createLineBorder(Color.green));
 		return label;*/
 	}
-	private JLabel generateLabelBig(int r) {
+	private CellLabel generateLabelBig(int r) {
 		boolean highlight[] = new boolean[10];
 		highlight[2] = true;
 		

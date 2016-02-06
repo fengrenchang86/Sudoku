@@ -12,7 +12,11 @@ public class CellLabel extends JLabel {
 	private boolean arr[];
 	private boolean highlight[];
 	private String html;
+	
+	private boolean showTips;
+	
 	public CellLabel(int value, boolean arr[]) {
+		this.showTips = false;
 		this.value = value;
 		this.arr = arr;
 		this.setAlignmentX(CENTER_ALIGNMENT);
@@ -20,7 +24,7 @@ public class CellLabel extends JLabel {
 		this.setBorder(BorderFactory.createLineBorder(Color.green));
 	}
 	public void updateCell() {
-		this.html = LabelUtil.createLabel(value, arr, highlight);
+		this.html = LabelUtil.createLabel(value, arr, highlight, this.showTips);
 		this.setText(html);
 	}
 	public int getValue() {
@@ -40,5 +44,11 @@ public class CellLabel extends JLabel {
 	}
 	public void setHighlight(boolean[] highlight) {
 		this.highlight = highlight;
+	}
+	public boolean isShowTips() {
+		return showTips;
+	}
+	public void setShowTips(boolean showTips) {
+		this.showTips = showTips;
 	}
 }

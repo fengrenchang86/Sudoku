@@ -40,12 +40,7 @@ public class Sudoku {
 	
 	public Sudoku() {
 		init(3);
-	}
-	/*
-	public Sudoku(int n) {
-		init(n);
-	}*/
-	
+	}	
 	public boolean readGridFromString(String str, int n) {
 		if (str == null || str.length() != n * n * n * n) {
 			return false;
@@ -66,15 +61,31 @@ public class Sudoku {
 		show();
 		return true;
 	}
+	//只有某单元格唯一可填某数字
+	public int solveWithUniqueCell() {
+		System.out.println("solveWithUniqueCell");
+		int rt = fillUniqueCell();
+		show();
+		System.out.println("Solve:" + rt);
+		return rt;
+	}
+	//某行、列、块中，只有某一个可填特定数字
+	public int solveWithUniqueNum() {
+		System.out.println("solveWithUniqueNum");
+		int rt = fillUniqueNum();
+		show();
+		System.out.println("Solve:" + rt);
+		return rt;
+	}
+	
 	public int solve() {
-		int rt = fillUnique();
-		System.out.println("fillUnique:" + rt);
-		rt += fillUnique2();
-		System.out.println("fillUnique2:" + rt);
+		int rt = solveWithUniqueCell();
+		rt += solveWithUniqueNum();
+		System.out.println("Solve:" + rt);
 		show();
 		return rt;
 	}
-	protected int fillUnique2() {
+	protected int fillUniqueNum() {
 		int rt = 0;
 		int c = 0, v = 0, row = 0, col = 0, bid = 0;
 		//In row[i], k can only be fill in grid[i][j]
@@ -145,7 +156,7 @@ public class Sudoku {
 		}
 		return rt;
 	}
-	protected int fillUnique() {
+	protected int fillUniqueCell() {
 		int rt = 0;
 		int c = 0, v = 0, row = 0, col = 0;
 		for (int i = 0; i < N; i++) {
