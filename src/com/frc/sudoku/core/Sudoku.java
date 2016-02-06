@@ -7,32 +7,32 @@ public class Sudoku {
 	private int N = 3;
 	private int[][] grid = null;
 	/*[i][j][k]
-	 * 绗琲琛岋紝绗琷鍒楋紝鑳藉惁濉玨
+	 * 第i行，第j列，能否填k
 	 */
 	private boolean[][][] choices = null;
 	
 	/*[i][j]
-	 * 绗琲琛岋紝鑳藉惁濉玧
+	 * 第i行，能否填j
 	 */
 	private boolean[][] choices_row = null;
 	
 	/*[i][j]
-	 * 绗琲鍒楋紝鑳藉惁濉玧
+	 * 第i列，能否填j
 	 */
 	private boolean[][] choices_col = null;
 	
 	/*[i][j]
-	 * 绗琲涓猙ox锛岃兘鍚﹀～j
+	 * 第i个box，能否填j
 	 */
 	private boolean[][] box = null;
 	
 	/*[i][j]
-	 * 绗琲琛岋紝绗琷鍒楋紝鏈夊灏戜釜閫夋嫨
+	 * 第i行，第j列，有多少个选择
 	 */
 	private int[][] statics = null;
 	
 	/*[i][j]
-	 * 绗琲涓猙ox锛屾湁澶氬皯涓�夋嫨
+	 * 第i个box，有多少个选择
 	 */
 	private int[] statics_box = null;
 	
