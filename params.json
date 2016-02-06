@@ -1,0 +1,1 @@
+{"name":"Sudoku","tagline":"Fengrenchang","body":"## 功能\r\n从文本框中输入字符串数据 <br/>\r\n图像显示局<br/>\r\n高亮显示特定数字<br/>\r\n显示/隐藏提示<br/>\r\n利用特定一种算法执行一次运算，显示结果<br/>\r\n\r\n## Sudoku\r\n消除唯一 （单元格）<br/>\r\n消除唯一 （行、列、块）<br/>","google":"","note":"Don't delete this file! It's used internally to help with page regeneration."}
